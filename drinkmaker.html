@@ -5,6 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Drankje Maken</title>
   <link rel="stylesheet" href="style/main.css">
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const supabase = createClient('https://vyesjdndzshbiweslzpx.supabase.co', 'public-anon-key');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('drinkForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('drinkName').value;
+        const checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
+        const flavors = Array.from(checkboxes).map(cb => cb.value);
+
+        const blob = new Blob([JSON.stringify({ name, flavors })], { type: 'application/json' });
+        const { error } = await supabase.storage.from('drinks').upload(`${name}.json`, blob, { upsert: true });
+
+        if (error) alert('Fout bij uploaden: ' + error.message);
+        else alert('Drankje opgeslagen!');
+      });
+    });
+  </script>
 </head>
 <body>
   <h1>Maak je eigen drankje 🍹</h1>
@@ -23,8 +43,5 @@
 
     <button type="submit">Opslaan</button>
   </form>
-  <div id="preview"></div>
-
-  <script src="js/drinkmaker.js"></script>
 </body>
 </html>
