@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Beker ontwerpen</title>
   <link rel="stylesheet" href="style/main.css" />
+  <style>
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #555;
+      text-align: center;
+      border-top: 1px solid #ccc;
+      padding-top: 1rem;
+    }
+  </style>
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -65,5 +75,9 @@
     <button type="submit">Opslaan</button>
   </form>
   <p id="message" role="alert" style="color: red; font-weight: bold;"></p>
+
+  <footer>
+    &copy; 2025 Limonee
+  </footer>
 </body>
 </html>
