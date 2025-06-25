@@ -1,27 +1,47 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Drankje Maken</title>
-  <link rel="stylesheet" href="style/main.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Drankje maken</title>
+  <link rel="stylesheet" href="style/main.css" />
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-    const supabase = createClient('https://vyesjdndzshbiweslzpx.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5ZXNqZG5kenNoYml3ZXNsenB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NzQ2NTUsImV4cCI6MjA2NjQ1MDY1NX0.fsMkTKVcCH-WqPaLuwg1dxOgBekDz11Jd4Htf1FVGrs');
+    const supabase = createClient(
+      "https://vyesjdndzshbiweslzpx.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5ZXNqZG5kenNoYml3ZXNsenB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NzQ2NTUsImV4cCI6MjA2NjQ1MDY1NX0.fsMkTKVcCH-WqPaLuwg1dxOgBekDz11Jd4Htf1FVGrs"
+    );
 
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('drinkForm').addEventListener('submit', async (e) => {
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("drinkForm");
+      const message = document.getElementById("message");
+
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const name = document.getElementById('drinkName').value;
-        const checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
-        const flavors = Array.from(checkboxes).map(cb => cb.value);
+        message.textContent = "";
 
-        const blob = new Blob([JSON.stringify({ name, flavors })], { type: 'application/json' });
-        const { error } = await supabase.storage.from('drinks').upload(`${name}.json`, blob, { upsert: true });
+        const name = form.drinkName.value.trim();
+        if (!name) {
+          message.textContent = "Geef je drankje een naam!";
+          return;
+        }
 
-        if (error) alert('Fout bij uploaden: ' + error.message);
-        else alert('Drankje opgeslagen!');
+        const checkedBoxes = [...form.querySelectorAll('input[type="checkbox"]:checked')];
+        if (checkedBoxes.length === 0) {
+          message.textContent = "Kies minstens één smaak!";
+          return;
+        }
+
+        const flavors = checkedBoxes.map((cb) => cb.value);
+
+        const { error } = await supabase.from("drinks").insert([{ name, flavors }]);
+        if (error) {
+          message.textContent = "Fout bij opslaan: " + error.message;
+        } else {
+          message.textContent = "Drankje succesvol opgeslagen! 🎉";
+          form.reset();
+        }
       });
     });
   </script>
@@ -29,19 +49,23 @@
 <body>
   <h1>Maak je eigen drankje 🍹</h1>
   <form id="drinkForm">
-    <label>Naam van je drankje:
-      <input type="text" id="drinkName" required>
+    <label>
+      Naam van je drankje:
+      <input type="text" name="drinkName" required />
     </label>
 
     <fieldset>
       <legend>Kies je smaken:</legend>
-      <label><input type="checkbox" value="citroen"> Citroen</label>
-      <label><input type="checkbox" value="aardbei"> Aardbei</label>
-      <label><input type="checkbox" value="cola"> Cola</label>
-      <label><input type="checkbox" value="munt"> Munt</label>
+      <label><input type="checkbox" value="citroen" /> Citroen</label>
+      <label><input type="checkbox" value="aardbei" /> Aardbei</label>
+      <label><input type="checkbox" value="cola" /> Cola</label>
+      <label><input type="checkbox" value="munt" /> Munt</label>
+      <label><input type="checkbox" value="framboos" /> Framboos</label>
+      <label><input type="checkbox" value="ananas" /> Ananas</label>
     </fieldset>
 
     <button type="submit">Opslaan</button>
   </form>
+  <p id="message" role="alert" style="color: red; font-weight: bold;"></p>
 </body>
 </html>
