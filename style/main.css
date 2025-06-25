@@ -1,21 +1,90 @@
 body {
-  font-family: sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: #f0f8ff;
-  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 700px;
+  padding: 1rem;
   text-align: center;
 }
-.btn {
+
+h1 {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+nav a.btn {
   display: inline-block;
-  margin: 1rem;
+  margin: 0.8rem;
   padding: 1rem 2rem;
   background: #f4d942;
   color: #000;
   text-decoration: none;
   border-radius: 1rem;
-  font-weight: bold;
+  font-weight: 700;
+  transition: background 0.3s ease;
 }
-input[type="text"], input[type="color"] {
-  margin: 0.5rem;
+
+nav a.btn:hover {
+  background: #d4bf31;
+}
+
+form {
+  background: #fff;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 8px #ccc;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin: 0.5rem 0 1rem;
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="color"],
+textarea {
+  width: 100%;
   padding: 0.5rem;
   border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+fieldset {
+  margin: 1rem 0;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 0.7rem;
+}
+
+legend {
+  font-weight: 700;
+}
+
+button[type="submit"] {
+  background: #f4d942;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background: #d4bf31;
+}
+
+.card {
+  background: #fff;
+  padding: 1rem;
+  margin: 0.7rem 0;
+  border-radius: 1rem;
+  box-shadow: 0 0 6px #ccc;
+  text-align: left;
 }
