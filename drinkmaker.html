@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drankje Maken</title>
+  <link rel="stylesheet" href="style/main.css">
+</head>
+<body>
+  <h1>Maak je eigen drankje 🍹</h1>
+  <form id="drinkForm">
+    <label>Naam van je drankje:
+      <input type="text" id="drinkName" required>
+    </label>
+
+    <fieldset>
+      <legend>Kies je smaken:</legend>
+      <label><input type="checkbox" value="citroen"> Citroen</label>
+      <label><input type="checkbox" value="aardbei"> Aardbei</label>
+      <label><input type="checkbox" value="cola"> Cola</label>
+      <label><input type="checkbox" value="munt"> Munt</label>
+    </fieldset>
+
+    <button type="submit">Opslaan</button>
+  </form>
+  <div id="preview"></div>
+
+  <script src="js/drinkmaker.js"></script>
+</body>
+</html>
