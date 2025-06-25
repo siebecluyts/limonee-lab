@@ -5,6 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Galerij</title>
   <link rel="stylesheet" href="style/main.css" />
+  <style>
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #555;
+      text-align: center;
+      border-top: 1px solid #ccc;
+      padding-top: 1rem;
+    }
+    .card {
+      background: #fff;
+      padding: 1rem;
+      margin: 0.7rem 0;
+      border-radius: 1rem;
+      box-shadow: 0 0 6px #ccc;
+      text-align: left;
+    }
+  </style>
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -25,9 +43,11 @@
         container.innerHTML += `<p>Fout bij laden drankjes: ${errDrinks.message}</p>`;
       } else {
         drinks.forEach((drink) => {
-          container.innerHTML += `<div class="card"><strong>${drink.name}</strong>: ${drink.flavors.join(
-            ", "
-          )}</div>`;
+          container.innerHTML += `<div class="card" style="border-left: 8px solid ${drink.color}">
+            <strong>${drink.name}</strong><br />
+            Smaken: ${drink.flavors.join(", ")}<br />
+            Kleur: <span style="background:${drink.color}; padding:0 10px; border-radius:0.5rem;">&nbsp;</span>
+          </div>`;
         });
       }
 
@@ -53,5 +73,9 @@
 <body>
   <h1>Creaties van anderen 🌟</h1>
   <div id="galleryContainer"></div>
+
+  <footer>
+    &copy; 2025 Limonee
+  </footer>
 </body>
 </html>
