@@ -5,6 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Beker Ontwerpen</title>
   <link rel="stylesheet" href="style/main.css">
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const supabase = createClient('https://vyesjdndzshbiweslzpx.supabase.co', 'public-anon-key');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('cupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const label = document.getElementById('cupLabel').value;
+        const color = document.getElementById('cupColor').value;
+
+        const blob = new Blob([JSON.stringify({ label, color })], { type: 'application/json' });
+        const { error } = await supabase.storage.from('bekers').upload(`${label}.json`, blob, { upsert: true });
+
+        if (error) alert('Fout bij uploaden: ' + error.message);
+        else alert('Beker opgeslagen!');
+      });
+    });
+  </script>
 </head>
 <body>
   <h1>Ontwerp je beker 🎨</h1>
@@ -17,8 +36,5 @@
     </label>
     <button type="submit">Opslaan</button>
   </form>
-  <div id="cupPreview"></div>
-
-  <script src="js/cupmaker.js"></script>
 </body>
 </html>
