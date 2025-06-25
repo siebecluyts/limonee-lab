@@ -5,11 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Galerij</title>
   <link rel="stylesheet" href="style/main.css">
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const supabase = createClient('https://vyesjdndzshbiweslzpx.supabase.co', 'public-anon-key');
+
+    async function loadData(bucket, title, container) {
+      const { data, error } = await supabase.storage.from(bucket).list();
+      if (error) return container.innerHTML += `<p>Fout bij laden van ${bucket}</p>`;
+
+      container.innerHTML += `<h2>${title}</h2>`;
+      for (const file of data) {
+        const url = `https://vyesjdndzshbiweslzpx.supabase.co/storage/v1/object/public/${bucket}/${file.name}`;
+        const res = await fetch(url);
+        const content = await res.json();
+        if (bucket === 'drinks') {
+          container.innerHTML += `<div><strong>${content.name}</strong>: ${content.flavors.join(', ')}</div>`;
+        } else if (bucket === 'bekers') {
+          container.innerHTML += `<div style="background:${content.color};padding:1rem;border-radius:1rem;margin:1rem;">
+            <strong>${content.label}</strong>
+          </div>`;
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const container = document.getElementById('galleryContainer');
+      await loadData('drinks', '🥤 Drankjes', container);
+      await loadData('bekers', '🥛 Bekers', container);
+    });
+  </script>
 </head>
 <body>
   <h1>Creaties van anderen 🌟</h1>
   <div id="galleryContainer"></div>
-
-  <script src="js/gallery.js"></script>
 </body>
 </html>
