@@ -1,3 +1,4 @@
+/* Algemene body stijl */
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: #f0f8ff;
@@ -5,13 +6,17 @@ body {
   max-width: 700px;
   padding: 1rem;
   text-align: center;
+  color: #222;
 }
 
+/* Hoofd titel */
 h1 {
   font-weight: 700;
   margin-bottom: 1rem;
+  color: #333;
 }
 
+/* Navigatie knoppen */
 nav a.btn {
   display: inline-block;
   margin: 0.8rem;
@@ -22,12 +27,15 @@ nav a.btn {
   border-radius: 1rem;
   font-weight: 700;
   transition: background 0.3s ease;
+  box-shadow: 0 3px 6px rgba(244, 217, 66, 0.5);
 }
 
 nav a.btn:hover {
   background: #d4bf31;
+  box-shadow: 0 4px 8px rgba(212, 191, 49, 0.7);
 }
 
+/* Formulieren */
 form {
   background: #fff;
   padding: 1.5rem;
@@ -37,12 +45,15 @@ form {
   text-align: left;
 }
 
+/* Labels */
 label {
   display: block;
   margin: 0.5rem 0 1rem;
   font-weight: 600;
+  color: #222;
 }
 
+/* Tekstvelden en kleurenpicker */
 input[type="text"],
 input[type="color"],
 textarea {
@@ -54,6 +65,12 @@ textarea {
   box-sizing: border-box;
 }
 
+/* Tekstgebied */
+textarea {
+  resize: vertical;
+}
+
+/* Fieldsets */
 fieldset {
   margin: 1rem 0;
   border: 1px solid #ccc;
@@ -61,10 +78,12 @@ fieldset {
   border-radius: 0.7rem;
 }
 
+/* Legend */
 legend {
   font-weight: 700;
 }
 
+/* Submit knop */
 button[type="submit"] {
   background: #f4d942;
   border: none;
@@ -74,12 +93,15 @@ button[type="submit"] {
   border-radius: 1rem;
   cursor: pointer;
   transition: background 0.3s ease;
+  box-shadow: 0 3px 6px rgba(244, 217, 66, 0.6);
 }
 
 button[type="submit"]:hover {
   background: #d4bf31;
+  box-shadow: 0 4px 8px rgba(212, 191, 49, 0.8);
 }
 
+/* Kaarten voor drankjes en bekers */
 .card {
   background: #fff;
   padding: 1rem;
@@ -87,4 +109,14 @@ button[type="submit"]:hover {
   border-radius: 1rem;
   box-shadow: 0 0 6px #ccc;
   text-align: left;
+}
+
+/* Footer */
+footer {
+  margin-top: 3rem;
+  font-size: 0.9rem;
+  color: #555;
+  text-align: center;
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
 }
