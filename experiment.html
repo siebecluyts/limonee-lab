@@ -1,59 +1,71 @@
 <!DOCTYPE html>
 <html lang="nl">
-<head>
-  <meta charset="UTF-8">
-  <title>Experiment</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style/main.css">
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const exp = urlParams.get("exp");
-      const container = document.getElementById("experiment");
-
-      if (exp === "kleuren") {
-        container.innerHTML = `
-          <h2>🎨 Kleurmeng-experiment</h2>
-          <p>Kies twee kleuren en zie wat voor kleur je krijgt:</p>
-          <input type="color" id="color1" value="#ff0000"> +
-          <input type="color" id="color2" value="#0000ff">
-          <div id="result" style="width:100px;height:100px;margin-top:1rem;border:1px solid #000;"></div>
-        `;
-        document.querySelectorAll("input[type=color]").forEach(input => {
-          input.addEventListener("input", () => {
-            const c1 = document.getElementById("color1").value;
-            const c2 = document.getElementById("color2").value;
-            const avgColor = mixColors(c1, c2);
-            document.getElementById("result").style.backgroundColor = avgColor;
-          });
-        });
-      } else if (exp === "smaken") {
-        container.innerHTML = `
-          <h2>🍋 Smaakmix-simulator</h2>
-          <p>Stel je smaak samen:</p>
-          <label><input type="checkbox" value="citroen"> Citroen</label>
-          <label><input type="checkbox" value="aardbei"> Aardbei</label>
-          <label><input type="checkbox" value="munt"> Munt</label>
-          <br><button onclick="alert('Je Limonee zou lekker fris smaken!')">Proef!</button>
-        `;
-      } else {
-        container.innerHTML = "<p>❓ Onbekend experiment.</p>";
-      }
-
-      function mixColors(hex1, hex2) {
-        function hexToRGB(hex) {
-          return hex.match(/\w\w/g).map(x => parseInt(x, 16));
-        }
-        const [r1, g1, b1] = hexToRGB(hex1);
-        const [r2, g2, b2] = hexToRGB(hex2);
-        const avg = c => Math.round((c[0] + c[1]) / 2);
-        return `rgb(${avg([r1, r2])},${avg([g1, g2])},${avg([b1, b2])})`;
-      }
-    });
-  </script>
-</head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Experiment</title><link rel="stylesheet" href="style/main.css"></head>
 <body>
   <div id="experiment">Bezig met laden...</div>
   <footer>&copy; 2025 Limonee</footer>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient(
+      'https://vyesjdndzshbiweslzpx.supabase.co',
+      'YOUR_ANON_PUBLIC_KEY'
+    );
+    document.addEventListener('DOMContentLoaded', () => {
+      const p = new URLSearchParams(location.search).get('exp');
+      const container = document.getElementById('experiment');
+      if (p === 'kleuren') loadKleur(container);
+      else if (p === 'smaken') loadSmaken(container);
+      else container.innerHTML = '<p>❓ Geen experiment gekozen.</p>';
+
+      async function save(type, payload) {
+        const { error } = await supabase.from('experiments').insert([{ type, payload }]);
+        if (error) alert('Fout bij opslaan: '+error.message);
+        else alert('Resultaat opgeslagen!');
+      }
+
+      function loadKleur(c) {
+        c.innerHTML = `
+          <h2>🎨 Kleurmeng-experiment</h2>
+          <input type="color" id="c1" value="#ff0000"> +
+          <input type="color" id="c2" value="#0000ff"><br>
+          <div id="res" style="width:100px;height:100px;border:1px solid"></div><br>
+          <button id="save">Opslaan</button>`;
+        const i1 = c.querySelector('#c1'), i2 = c.querySelector('#c2');
+        const res = c.querySelector('#res'), btn = c.querySelector('#save');
+        function mush() {
+          const [r1,g1,b1]=hexToRGB(i1.value), [r2,g2,b2]=hexToRGB(i2.value);
+          const m = [avg(r1,r2), avg(g1,g2), avg(b1,b2)];
+          const hex = rgbToHex(m);
+          res.style.background = hex;
+        }
+        i1.oninput = mush; i2.oninput = mush; mush();
+        btn.onclick = () => save('kleuren',{ c1:i1.value, c2:i2.value, result:getComputedStyle(res).background });
+      }
+
+      function loadSmaken(c) {
+        c.innerHTML = `
+          <h2>🍋 Smaakmix-simulator</h2>
+          <label><input type="checkbox" v="citroen">Citroen</label>
+          <label><input type="checkbox" v="aardbei">Aardbei</label>
+          <label><input type="checkbox" v="munt">Munt</label><br>
+          <button id="taste">Proef & opslaan</button>`;
+        c.querySelector('#taste').onclick = () => {
+          const sel = [...c.querySelectorAll('input:checked')].map(x=>x.getAttribute('v'));
+          if (!sel.length) return alert('Kies iets!');
+          save('smaken',{ flavors:sel });
+        };
+      }
+
+      function hexToRGB(hex) {
+        return hex.match(/\w\w/g).map(x=>parseInt(x,16));
+      }
+      function avg(a,b){return Math.round((a+b)/2);}
+      function rgbToHex([r,g,b]) {
+        return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
+      }
+
+    });
+  </script>
 </body>
 </html>
