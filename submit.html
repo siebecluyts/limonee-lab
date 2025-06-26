@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="nl">
-<head>
-  <meta charset="UTF-8">
-  <title>Deel jouw idee</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style/main.css">
-</head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Idee delen</title><link rel="stylesheet" href="style/main.css"></head>
 <body>
-  <h1>📤 Deel jouw Limonee idee!</h1>
-  <p>Heb je een coole smaakcombinatie, test, of kleurmix? Laat het ons weten:</p>
-
-  <form onsubmit="alert('Bedankt voor je inzending!'); return false;">
-    <label>Jouw naam:<br><input type="text" required></label><br>
-    <label>Wat heb je ontdekt of gemaakt?<br><textarea rows="4" required></textarea></label><br>
-    <button type="submit">Verstuur</button>
+  <h1>📤 Deel je Limonee idee</h1>
+  <form id="f">
+    <label>Naam:<br><input name="name" required></label><br>
+    <label>Idee:<br><textarea name="idee" rows="4" required></textarea></label><br>
+    <button>Verstuur</button>
   </form>
-
+  <p id="msg" role="alert"></p>
   <footer>&copy; 2025 Limonee</footer>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient(
+      'https://vyesjdndzshbiweslzpx.supabase.co',
+      'YOUR_ANON_PUBLIC_KEY'
+    );
+    document.getElementById('f').onsubmit = async e=> {
+      e.preventDefault();
+      const d = new FormData(e.target);
+      const payload = { name:d.get('name'), idee:d.get('idee') };
+      const {error} = await supabase.from('experiments').insert([{ type:'idee', payload }]);
+      const m = document.getElementById('msg');
+      if (error) m.textContent='Fout: '+error.message;
+      else { m.textContent='Bedankt!'; e.target.reset(); }
+    }
+  </script>
 </body>
 </html>
