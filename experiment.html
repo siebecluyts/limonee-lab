@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Experiment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style/main.css">
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const exp = urlParams.get("exp");
+      const container = document.getElementById("experiment");
+
+      if (exp === "kleuren") {
+        container.innerHTML = `
+          <h2>🎨 Kleurmeng-experiment</h2>
+          <p>Kies twee kleuren en zie wat voor kleur je krijgt:</p>
+          <input type="color" id="color1" value="#ff0000"> +
+          <input type="color" id="color2" value="#0000ff">
+          <div id="result" style="width:100px;height:100px;margin-top:1rem;border:1px solid #000;"></div>
+        `;
+        document.querySelectorAll("input[type=color]").forEach(input => {
+          input.addEventListener("input", () => {
+            const c1 = document.getElementById("color1").value;
+            const c2 = document.getElementById("color2").value;
+            const avgColor = mixColors(c1, c2);
+            document.getElementById("result").style.backgroundColor = avgColor;
+          });
+        });
+      } else if (exp === "smaken") {
+        container.innerHTML = `
+          <h2>🍋 Smaakmix-simulator</h2>
+          <p>Stel je smaak samen:</p>
+          <label><input type="checkbox" value="citroen"> Citroen</label>
+          <label><input type="checkbox" value="aardbei"> Aardbei</label>
+          <label><input type="checkbox" value="munt"> Munt</label>
+          <br><button onclick="alert('Je Limonee zou lekker fris smaken!')">Proef!</button>
+        `;
+      } else {
+        container.innerHTML = "<p>❓ Onbekend experiment.</p>";
+      }
+
+      function mixColors(hex1, hex2) {
+        function hexToRGB(hex) {
+          return hex.match(/\w\w/g).map(x => parseInt(x, 16));
+        }
+        const [r1, g1, b1] = hexToRGB(hex1);
+        const [r2, g2, b2] = hexToRGB(hex2);
+        const avg = c => Math.round((c[0] + c[1]) / 2);
+        return `rgb(${avg([r1, r2])},${avg([g1, g2])},${avg([b1, b2])})`;
+      }
+    });
+  </script>
+</head>
+<body>
+  <div id="experiment">Bezig met laden...</div>
+  <footer>&copy; 2025 Limonee</footer>
+</body>
+</html>
