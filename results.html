@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resultaten van het Limonee Lab</title>
+  <link rel="stylesheet" href="style/main.css" />
+</head>
+<body>
+  <h1>📊 Limonee Lab Resultaten</h1>
+  <p>Bekijk hier wat anderen hebben ontdekt of bedacht!</p>
+
+  <div id="results">
+    <h2>🎨 Kleurenmixen</h2>
+    <div id="kleuren"></div>
+
+    <h2>🍋 Smaakmixen</h2>
+    <div id="smaken"></div>
+
+    <h2>💡 Ideeën</h2>
+    <div id="ideeën"></div>
+  </div>
+
+  <footer>&copy; 2025 Limonee</footer>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+    const supabase = createClient(
+      "https://vyesjdndzshbiweslzpx.supabase.co",
+      "YOUR_ANON_PUBLIC_KEY"
+    );
+
+    async function loadResults() {
+      const { data, error } = await supabase
+        .from("experiments")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        document.getElementById("results").innerHTML = `<p>❌ Fout bij laden: ${error.message}</p>`;
+        return;
+      }
+
+      const kleurenDiv = document.getElementById("kleuren");
+      const smakenDiv = document.getElementById("smaken");
+      const ideeenDiv = document.getElementById("ideeën");
+
+      data.forEach((exp) => {
+        if (exp.type === "kleuren") {
+          const p = exp.payload;
+          kleurenDiv.innerHTML += `
+            <div class="card">
+              🔵 ${p.c1} + 🔴 ${p.c2} = 
+              <span style="display:inline-block;width:1rem;height:1rem;background:${p.result};border:1px solid #000;"></span>
+              (${p.result})
+            </div>`;
+        } else if (exp.type === "smaken") {
+          const p = exp.payload;
+          smakenDiv.innerHTML += `
+            <div class="card">🥤 Smaak: ${p.flavors.join(", ")}</div>`;
+        } else if (exp.type === "idee") {
+          const p = exp.payload;
+          ideeenDiv.innerHTML += `
+            <div class="card">
+              <strong>${p.name}</strong>:<br>
+              ${p.idee}
+            </div>`;
+        }
+      });
+    }
+
+    loadResults();
+  </script>
+</body>
+</html>
