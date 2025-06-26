@@ -1,122 +1,42 @@
-/* Algemene body stijl */
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: #f0f8ff;
-  margin: 2rem auto;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0fff7;
+  color: #222;
   max-width: 700px;
-  padding: 1rem;
+  margin: auto;
+  padding: 2rem;
   text-align: center;
-  color: #222;
 }
 
-/* Hoofd titel */
-h1 {
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: #333;
+h1, h2 {
+  color: #228833;
 }
 
-/* Navigatie knoppen */
-nav a.btn {
+.btn {
   display: inline-block;
-  margin: 0.8rem;
+  margin: 1rem;
   padding: 1rem 2rem;
-  background: #f4d942;
-  color: #000;
+  background: #aaffaa;
+  border-radius: 1rem;
   text-decoration: none;
-  border-radius: 1rem;
-  font-weight: 700;
-  transition: background 0.3s ease;
-  box-shadow: 0 3px 6px rgba(244, 217, 66, 0.5);
+  color: #000;
+  font-weight: bold;
+  box-shadow: 0 0 8px #aaa;
 }
 
-nav a.btn:hover {
-  background: #d4bf31;
-  box-shadow: 0 4px 8px rgba(212, 191, 49, 0.7);
+ul {
+  list-style: none;
+  padding: 0;
 }
 
-/* Formulieren */
-form {
-  background: #fff;
-  padding: 1.5rem;
-  margin-top: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 0 8px #ccc;
-  text-align: left;
-}
-
-/* Labels */
-label {
-  display: block;
-  margin: 0.5rem 0 1rem;
-  font-weight: 600;
-  color: #222;
-}
-
-/* Tekstvelden en kleurenpicker */
-input[type="text"],
-input[type="color"],
-textarea {
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
-/* Tekstgebied */
-textarea {
-  resize: vertical;
-}
-
-/* Fieldsets */
-fieldset {
+ul li {
   margin: 1rem 0;
-  border: 1px solid #ccc;
-  padding: 1rem;
-  border-radius: 0.7rem;
 }
 
-/* Legend */
-legend {
-  font-weight: 700;
-}
-
-/* Submit knop */
-button[type="submit"] {
-  background: #f4d942;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-weight: 700;
-  font-size: 1rem;
-  border-radius: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  box-shadow: 0 3px 6px rgba(244, 217, 66, 0.6);
-}
-
-button[type="submit"]:hover {
-  background: #d4bf31;
-  box-shadow: 0 4px 8px rgba(212, 191, 49, 0.8);
-}
-
-/* Kaarten voor drankjes en bekers */
-.card {
-  background: #fff;
-  padding: 1rem;
-  margin: 0.7rem 0;
-  border-radius: 1rem;
-  box-shadow: 0 0 6px #ccc;
-  text-align: left;
-}
-
-/* Footer */
 footer {
   margin-top: 3rem;
-  font-size: 0.9rem;
-  color: #555;
-  text-align: center;
   border-top: 1px solid #ccc;
   padding-top: 1rem;
+  color: #666;
+  font-size: 0.9rem;
 }
