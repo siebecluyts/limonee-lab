@@ -18,11 +18,16 @@
       else if (p === 'smaken') loadSmaken(container);
       else container.innerHTML = '<p>❓ Geen experiment gekozen.</p>';
 
-      async function save(type, payload) {
-        const { error } = await supabase.from('experiments').insert([{ type, payload }]);
-        if (error) alert('Fout bij opslaan: '+error.message);
-        else alert('Resultaat opgeslagen!');
-      }
+async function save(type, payload) {
+  const { error, data } = await supabase.from('experiments').insert([{ type, payload }]);
+
+  if (error) {
+    console.error(error); // log exacte fout in browser
+    alert('Fout bij opslaan: ' + (error.message || 'Onbekende fout'));
+  } else {
+    alert('Resultaat opgeslagen!');
+  }
+}
 
       function loadKleur(c) {
         c.innerHTML = `
